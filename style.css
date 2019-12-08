@@ -1,0 +1,14 @@
+
+.calculator{
+    width: 200px;
+    margin: 20px auto;
+}
+
+button{
+    padding: 8px;
+    margin: 2px;
+}
+
+.clear{
+    width:140px;
+}
