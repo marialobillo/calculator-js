@@ -1,20 +1,59 @@
 let calculator = {
-    displayValue: '0',
-    firstOperand: null,
-    waitingForSecondOperand: false,
+    display: '0',
+    firstNumber: null,
+    waitingForSecondNumber: false,
     operator: null,
 }
 
-function initialize(){
-    calculator = {
-        displayValue: '0',
-        firstOperand: null,
-        waitingForSecondOperand: false,
-        operator: null,
-    }
+function getDigit(digit){
+  const {display, waitingForSecondNumber} = calculator;
+
+  if(waitingForSecondNumber){
+    calculator.display = digit;
+    calculator.waitingForSecondNumber = false;
+  } else {
+    if(calculator.display.length >= 10){ return;}
+    if(calculator.display.includes('.')){
+      let decimal = calculator.display.split('.')[1];
+      if(decimal.length >= 3) { return;}
+    } 
+
+    calculator.display = display === '0' ? digit : display + digit;
+  }
 }
 
+function setDecimal(dot){
+  if(!calculator.display.includes(dot)){
+    calculator.display += dot;
+  }
+}
 
+function getOperator(nextOperator){
+  
+}
+
+function doCalculation(operator, num1, num2){
+  let result;
+  console.log(num1, num2);
+  switch(operator){
+    case '/':
+      result = num1 / num2;
+      break;
+    case '*':
+      result = num1 * num2; 
+      break;
+    case '+': 
+      resutl = num1 + num2;
+      break;
+    case '-':
+      result = num1 - num2;
+      break;
+    case '=':
+      result = num2;
+      break;
+    }
+    return parseFloat(result).toFixed(3);
+}
 
 // what kind of data is num
 const keys = document.querySelector('.buttons')
