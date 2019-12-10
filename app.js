@@ -1,7 +1,8 @@
 let calculator = {
     display: '0',
-    firstNumber: null,
-    waitingForSecondNumber: false,
+    firstOperand: null,
+    secondOperand: null,
+    waitingForSecondOperand: false,
     operator: null,
 }
 
@@ -55,35 +56,28 @@ function doCalculation(operator, num1, num2){
     return parseFloat(result).toFixed(3);
 }
 
-// what kind of data is num
-const keys = document.querySelector('.buttons')
-const display = document.querySelector('.screen');
 
-keys.addEventListener('click', e => {
-    if(e.target.matches('button')){
-        const key = e.target
-        const num = key.dataset.num
-        const operator = key.dataset.key
-        const displayedNum = display.textContent;
-        if(!num){
-          if(operator === 'clear'){ console.log('clear key!') }
-          if(operator === '%') { console.log('division key!') }
-          if(operator === 'x') { console.log('multiplication key!') }
-          if(operator === '-') { console.log('substraction key!') }
-          if(operator === '+') { console.log('addition key!')}
-          if(operator === '=') { console.log('equal key!')}
-          if(operator === '.') { console.log('decimal key!')}
-        }
+const keys = document.querySelector('.buttons');
+keys.addEventListener('click', (event) => {
+  const { target } = event;
+  
+  if(!target.matches('button')) { return;}
 
-        if(!operator){
-            if(displayedNum === '0'){
-              display.textContent = num
-            } else {
-              display.textContent = displayedNum + num
-            }
+  if(target.classList.contains('operator')){
+    console.log('operator!');
+  }
 
-        }
+  if(target.classList.contains('decimal')){
+    console.log('decimal!');
+  }
+
+  if(target.classList.contains('equal')){
+    console.log('equal!');
+  }
+
+  if(target.classList.contains('clear')){
+    console.log('clear all!');
+  }
 
 
-    }
 })

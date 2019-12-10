@@ -14,7 +14,7 @@ button{
 }
 
 .clear{
-    width:90%
+    background-color: orange;
 }
 
 #screen{
@@ -23,4 +23,18 @@ button{
     font-size: 18px;
     line-height: 30px;
     
+}
+
+.operator{
+    background-color: rgb(61, 61, 158);
+    color: #fff;
+}
+
+.equal{
+    height: 210px;
+    position: relative;
+    float:right;
+    top: -215px;
+    right: 22px;
+    background-color: rgb(223, 105, 105);
 }
