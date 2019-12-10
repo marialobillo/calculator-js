@@ -7,20 +7,16 @@ let calculator = {
 }
 
 function getDigit(digit){
-  const {display, waitingForSecondNumber} = calculator;
+  const {display} = calculator;
 
-  if(waitingForSecondNumber){
-    calculator.display = digit;
-    calculator.waitingForSecondNumber = false;
-  } else {
-    if(calculator.display.length >= 10){ return;}
-    if(calculator.display.includes('.')){
-      let decimal = calculator.display.split('.')[1];
-      if(decimal.length >= 3) { return;}
-    } 
+  if(calculator.display.length >= 10){ return;}
+  if(calculator.display.includes('.')){
+    let decimal = calculator.display.split('.')[1];
+    if(decimal.length >= 3) { return;}
+  } 
 
-    calculator.display = display === '0' ? digit : display + digit;
-  }
+  calculator.display = display === '0' ? digit : display + digit;
+  
 }
 
 function setDecimal(dot){
@@ -29,13 +25,35 @@ function setDecimal(dot){
   }
 }
 
-function getOperator(nextOperator){
+function getOperator(operator){
+  const display = calculator.display;
+
+  if(calculator.firstOperand == null){
+    calculator.firstOperand = parseFloat(display);
+    calculator.operator = operator;
+    calculator.waitingForSecondOperand = true;
+    calculator.display = '0';
+    updateScreen();
+  console.log(result);
+
+function showResult(){
+  const {firstOperand, operator, display} = calculator;
+  if(firstOperand == null || operator == null) { return;}
   
+  const secondOperand = parseFloat(display);
+  const result = doCalculation(operator, firstOperand, secondOperand);
+  
+  calculator.display = String(result);
+  calculator.firstOperand = result;
+  calculator.secondOperand = null;
+  updateScreen();  
+  
+
 }
 
 function doCalculation(operator, num1, num2){
   let result;
-  console.log(num1, num2);
+  console.log(operator, num1, num2);
   switch(operator){
     case '/':
       result = num1 / num2;
@@ -44,7 +62,8 @@ function doCalculation(operator, num1, num2){
       result = num1 * num2; 
       break;
     case '+': 
-      resutl = num1 + num2;
+
+      result = num1 + num2;
       break;
     case '-':
       result = num1 - num2;
@@ -53,9 +72,23 @@ function doCalculation(operator, num1, num2){
       result = num2;
       break;
     }
-    return parseFloat(result).toFixed(3);
+    return parseFloat(result);
 }
 
+function updateScreen(){
+  const display = document.querySelector('.screen');
+  display.value = calculator.display;
+}
+
+function clearCalculator(){
+  calculator.display = '0';
+  calculator.firstOperand = null;
+  calculator.secondOperand = null;
+  calculator.waitingForSecondOperand = false;
+  calculator.operator =  null;
+}
+
+updateScreen();
 
 const keys = document.querySelector('.buttons');
 keys.addEventListener('click', (event) => {
@@ -64,20 +97,29 @@ keys.addEventListener('click', (event) => {
   if(!target.matches('button')) { return;}
 
   if(target.classList.contains('operator')){
-    console.log('operator!');
+    getOperator(target.value);
+
+    return;
   }
 
   if(target.classList.contains('decimal')){
-    console.log('decimal!');
+    setDecimal(target.value);
+    return;
   }
 
   if(target.classList.contains('equal')){
-    console.log('equal!');
+    updateScreen();
+    showResult();
+    return;
   }
 
   if(target.classList.contains('clear')){
-    console.log('clear all!');
+    clearCalculator();
+    updateScreen();
+    return;
   }
 
+  getDigit(target.value);
+  updateScreen();
 
 })
