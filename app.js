@@ -1,59 +1,67 @@
-let calculator = {
-    display: '0',
-    firstOperand: null,
-    secondOperand: null,
-    waitingForSecondOperand: false,
-    operator: null,
+const calculator = {
+  display: '0',
+  firstOperand: null,
+  waitingForSecond: false,
+  secondOperand: null, 
+  operator: null,
 }
 
 function getDigit(digit){
-  const {display} = calculator;
+  const { firstOperand, waitingForSecond, display, operator } = calculator;
 
-  if(calculator.display.length >= 10){ return;}
-  if(calculator.display.includes('.')){
-    let decimal = calculator.display.split('.')[1];
-    if(decimal.length >= 3) { return;}
-  } 
-
-  calculator.display = display === '0' ? digit : display + digit;
-  
+  if(waitingForSecond == true){
+    calculator.display = digit;
+    calculator.waitingForSecond = false;
+  } else {
+    calculator.display = display === '0'? digit : display + digit;
+  }    
 }
 
 function setDecimal(dot){
+  if(calculator.waitingForSecond == true) { return;}
+
   if(!calculator.display.includes(dot)){
     calculator.display += dot;
   }
+  updateScreen();
 }
 
-function getOperator(operator){
-  const display = calculator.display;
+function handleOperator(operator){
+  const {firstOperand, secondOperand, display } = calculator;
 
-  if(calculator.firstOperand == null){
-    calculator.firstOperand = parseFloat(display);
+  if(firstOperand == null && secondOperand == null){
+
     calculator.operator = operator;
-    calculator.waitingForSecondOperand = true;
+    calculator.firstOperand = parseFloat(display);
     calculator.display = '0';
-    updateScreen();
-  console.log(result);
 
-function showResult(){
-  const {firstOperand, operator, display} = calculator;
-  if(firstOperand == null || operator == null) { return;}
-  
-  const secondOperand = parseFloat(display);
-  const result = doCalculation(operator, firstOperand, secondOperand);
-  
-  calculator.display = String(result);
-  calculator.firstOperand = result;
-  calculator.secondOperand = null;
-  updateScreen();  
-  
+  } else if (firstOperand != null){
 
+    calculator.operator = operator;
+
+    calculator.secondOperand = parseFloat(display);
+    let result = doCalculation(operator, firstOperand, calculator.secondOperand);
+
+    calculator.display = String(result);
+
+    calculator.firstOperand = result;
+    calculator.secondOperand = null;
+    calculator.operator = null;
+    
+  }
+
+  calculator.waitingForSecond = true;
 }
+
+function updateScreen(){
+  const display = document.querySelector('.screen');
+  display.value = calculator.display;
+}
+
 
 function doCalculation(operator, num1, num2){
   let result;
-  console.log(operator, num1, num2);
+
   switch(operator){
     case '/':
       result = num1 / num2;
@@ -62,7 +70,6 @@ function doCalculation(operator, num1, num2){
       result = num1 * num2; 
       break;
     case '+': 
-
       result = num1 + num2;
       break;
     case '-':
@@ -72,12 +79,26 @@ function doCalculation(operator, num1, num2){
       result = num2;
       break;
     }
+
     return parseFloat(result);
 }
 
-function updateScreen(){
-  const display = document.querySelector('.screen');
-  display.value = calculator.display;
+function showResult(){
+  let {firstOperand, secondOperand, operator, display} = calculator;
+
+  if(firstOperand == null || operator == null) { return;}
+  if(secondOperand != null && operator != null) { return;}
+
+  secondOperand = parseFloat(display);
+  calculator.secondOperand = secondOperand;
+  const result = doCalculation(operator, firstOperand, secondOperand);
+  
+  calculator.display = String(result);
+  calculator.firstOperand = null;
+  calculator.secondOperand = null;
+  calculator.operator = null;
+  calculator.waitingForSecond = false;
+  updateScreen();  
 }
 
 function clearCalculator(){
@@ -88,38 +109,39 @@ function clearCalculator(){
   calculator.operator =  null;
 }
 
+
 updateScreen();
 
 const keys = document.querySelector('.buttons');
-keys.addEventListener('click', (event) => {
-  const { target } = event;
+  keys.addEventListener('click', (event) => {
+    const { target } = event;
+    
+    if(!target.matches('button')) { return;}
   
-  if(!target.matches('button')) { return;}
-
-  if(target.classList.contains('operator')){
-    getOperator(target.value);
-
-    return;
-  }
-
-  if(target.classList.contains('decimal')){
-    setDecimal(target.value);
-    return;
-  }
-
-  if(target.classList.contains('equal')){
+    if(target.classList.contains('operator')){
+      handleOperator(target.value);
+      updateScreen();
+      return;
+    }
+  
+    if(target.classList.contains('decimal')){
+      setDecimal(target.value);
+      return;
+    }
+  
+    if(target.classList.contains('equal')){
+      showResult();
+      updateScreen();
+      return;
+    }
+  
+    if(target.classList.contains('clear')){
+      clearCalculator();
+      updateScreen();
+      return;
+    }
+  
+    getDigit(target.value);
     updateScreen();
-    showResult();
-    return;
-  }
-
-  if(target.classList.contains('clear')){
-    clearCalculator();
-    updateScreen();
-    return;
-  }
-
-  getDigit(target.value);
-  updateScreen();
-
-})
+  
+  })
