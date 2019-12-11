@@ -2,25 +2,28 @@ body{
     font-family: roboto, sans-serif;
 }
 .calculator{
-    width: 250px;
+    width: 300px;
     margin: 20px auto;
     background-color: #000;
     padding: 20px;
+    border-radius: 10px;
 }
 
 button{
-    width:50px;
-    height: 50px;
+    width:60px;
+    height: 60px;
     margin:2px;
-    font-size: 25px;
+    font-size:30px;
     cursor: pointer;
     border: none;
     border-radius: 50%;
+    color:#fff;
+    background-color:#333;
     
 }
 
 .clear{
-    background-color: orange;
+    background-color: #FF9507;
 }
 
 .screen{
@@ -32,6 +35,7 @@ button{
     color: #fff;
     border: none;
     text-align: right;
+    font-weight: 100;
     
 }
 
@@ -39,13 +43,19 @@ button{
     background-color: #FF9507;
     color: #fff;
 }
-/*
+
+.zero{
+    width:126px;
+    border-radius:20px;
+}
+
 .equal{
-    height: 210px;
+    width:55px;
+    height: 180px;
     position: relative;
     float:right;
-    top: -215px;
-    right: 22px;
-    background-color: rgb(223, 105, 105);
+    top: -252px;
+    right: 35px;
+    border-radius:20px;
+    
 }
-*/

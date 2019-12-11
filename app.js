@@ -7,7 +7,7 @@ const calculator = {
 }
 
 function getDigit(digit){
-  const { firstOperand, waitingForSecond, display, operator } = calculator;
+  const { waitingForSecond, display } = calculator;
 
   if(waitingForSecond == true){
     calculator.display = digit;
@@ -31,13 +31,10 @@ function handleOperator(operator){
 
   if(firstOperand == null && secondOperand == null){
 
-    calculator.operator = operator;
     calculator.firstOperand = parseFloat(display);
     calculator.display = '0';
 
   } else if (firstOperand != null){
-
-    calculator.operator = operator;
 
     calculator.secondOperand = parseFloat(display);
     let result = doCalculation(operator, firstOperand, calculator.secondOperand);
@@ -49,7 +46,8 @@ function handleOperator(operator){
     calculator.operator = null;
     
   }
-
+  
+  calculator.operator = operator;
   calculator.waitingForSecond = true;
 }
 
