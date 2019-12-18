@@ -33,8 +33,6 @@
   }
   
   
-
-  
   function handleOperator(operator){
     const {firstOperand, secondOperand, display } = calculator;
   
