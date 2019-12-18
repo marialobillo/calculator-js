@@ -6,27 +6,34 @@
     waitingForSecond: false,
     secondOperand: null, 
     operator: null,
-  }
+    clear: function(){
+      this.display = '0';
+      this.firstOperand = null;
+      this.secondOperand = null;
+      this.waitingForSecondOperand = false;
+      this.operator =  null;
+    },
+    getDigit: function(digit){
+      const { waitingForSecond, display } = calculator;
   
-  function getDigit(digit){
-    const { waitingForSecond, display } = calculator;
-  
-    if(waitingForSecond == true){
-      calculator.display = digit;
-      calculator.waitingForSecond = false;
-    } else {
-      calculator.display = display === '0'? digit : display + digit;
-    }    
-  }
-  
-  function setDecimal(dot){
-    if(calculator.waitingForSecond == true) { return;}
-  
-    if(!calculator.display.includes(dot)){
-      calculator.display += dot;
+      if(waitingForSecond == true){
+        this.display = digit;
+        this.waitingForSecond = false;
+      } else {
+        this.display = this.display === '0'? digit : this.display + digit;
+      }   
+    },
+    setDecimal: function(dot){
+      if(calculator.waitingForSecond == true) { return;}
+    
+      if(!calculator.display.includes(dot)){
+        calculator.display += dot;
+      }
     }
-    updateScreen();
   }
+  
+  
+
   
   function handleOperator(operator){
     const {firstOperand, secondOperand, display } = calculator;
@@ -101,13 +108,7 @@
     updateScreen();  
   }
   
-  function clearCalculator(){
-    calculator.display = '0';
-    calculator.firstOperand = null;
-    calculator.secondOperand = null;
-    calculator.waitingForSecondOperand = false;
-    calculator.operator =  null;
-  }
+
   
   
   updateScreen();
@@ -125,26 +126,31 @@
       }
     
       if(target.classList.contains('decimal')){
-        setDecimal(target.value);
-        return;
-      }
-    
-      if(target.classList.contains('equal')){
-        showResult();
+        calculator.setDecimal(target.value);
         updateScreen();
         return;
       }
-    
-      if(target.classList.contains('clear')){
-        clearCalculator();
-        updateScreen();
-        return;
-      }
-    
-      getDigit(target.value);
+ 
+    });
+
+    const equalButton = document.querySelector('#equal-btn');
+    equalButton.addEventListener('click', function(event){
+      showResult();
       updateScreen();
-    
     })
 
+    const clearButton = document.querySelector('#clear-btn');
+    clearButton.addEventListener('click', function(event){
+      calculator.clear();
+      updateScreen();
+    })
+
+    const numberButtons = document.querySelectorAll('.number-btn');
+    numberButtons.forEach(numberBtn => {
+      numberBtn.addEventListener('click', function(event){
+        calculator.getDigit(event.target.value);
+        updateScreen();
+      })
+    })
 
 })()

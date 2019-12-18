@@ -1,6 +1,6 @@
 # Calculator App
 
-_ A Calculator App using only Javascript._
+_A Calculator App using only Javascript._
 
 View live on CodePen <a href="https://codepen.io/marialobillo/pen/ExaKMwM" target="_blank">HERE</a>
 
