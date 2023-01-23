@@ -3,9 +3,9 @@ body{
 }
 .calculator{
     width: 300px;
-    margin: 20px auto;
+    margin: 25px auto;
     background-color: #000;
-    padding: 20px;
+    padding: 25px 0px 20px 25px;
     border-radius: 10px;
 }
 
@@ -19,7 +19,7 @@ button{
     border-radius: 50%;
     color:#fff;
     background-color:#A5A5A5;
-    
+
 }
 
 .clear{
@@ -36,7 +36,7 @@ button{
     border: none;
     text-align: right;
     font-weight: 100;
-    
+
 }
 
 .operator, .equal{
@@ -58,5 +58,5 @@ button{
     right: 35px;
     border-radius:20px;
     background-color: #FF9507;
-    
+
 }
